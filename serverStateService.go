@@ -1,1 +1,5 @@
-package serverStateService
+package main
+
+func main() {
+
+}
