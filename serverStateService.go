@@ -10,7 +10,11 @@ import (
 func main() {
 	http.HandleFunc("/", handlers.GetServersHandler)
 
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	completeAddress := os.Getenv("ADDRESS") + ":" + os.Getenv("PORT")
+
+	log.Println(completeAddress)
+
+	err := http.ListenAndServe(completeAddress, nil)
 	if err != nil {
 		log.Fatalln("Error listening")
 	}
