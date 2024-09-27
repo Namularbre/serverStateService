@@ -1,0 +1,10 @@
+# Jetbrains
+.idea
+serverStateService.iml
+
+# Projet
+.gitignore
+Dockerfile
+.dockerignore
+
+go.sum
