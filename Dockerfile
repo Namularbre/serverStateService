@@ -17,16 +17,6 @@ COPY . .
 # Build the application binary
 RUN GOOS=linux GOARCH=amd64 go build -o myapp
 
-# Step 2: Create the final image with the built binary
-# Use a lightweight Alpine image to run the application
-FROM alpine:latest
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the binary from the build stage
-COPY --from=builder /app/myapp .
-
 # Expose the port where the application will listen (e.g., 8080)
 EXPOSE 8080
 
