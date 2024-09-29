@@ -6,5 +6,3 @@ serverStateService.iml
 .gitignore
 Dockerfile
 .dockerignore
-
-go.sum
