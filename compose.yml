@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    container_name: server_state_service_app
+    ports:
+      - "8080:8080"
+  web:
+    image: nginx:latest
+    container_name: server_state_service_nginx
+    ports:
+      - "3000:80"
+      - "3001:443"
+    depends_on:
+      - app

@@ -11,7 +11,9 @@ type DatabaseHandler struct {
 
 func (d *DatabaseHandler) Connect() error {
 	db, err := sql.Open("mysql", os.Getenv("CONN_STR"))
-	d.DB = db
+	if err == nil {
+		d.DB = db
+	}
 	return err
 }
 
