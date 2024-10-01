@@ -15,10 +15,10 @@ RUN go mod tidy
 COPY . .
 
 # Build the application binary
-RUN GOOS=linux GOARCH=amd64 go build -o myapp
+RUN GOOS=linux GOARCH=amd64 go build -o serverStateService
 
 # Expose the port where the application will listen (e.g., 8080)
 EXPOSE 8080
 
 # Default command to run the application
-CMD ["./myapp"]
+CMD ["./serverStateService"]

@@ -6,5 +6,5 @@ type PingResult struct {
 	Id        int
 	IdServer  int
 	ScannedAt *time.Time
-	Respond   bool
+	Info      string
 }

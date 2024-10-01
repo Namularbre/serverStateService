@@ -34,22 +34,21 @@ func RunPings() {
 
 func runPing(server *entities.Server, pingResult chan entities.PingResult) {
 	response, err := http.Get(server.Ip)
+
 	now := time.Now()
 	if err != nil {
 		log.Println(err)
 		pingResult <- entities.PingResult{
 			IdServer:  server.Id,
-			Respond:   false,
 			ScannedAt: &now,
+			Info:      err.Error(),
 		}
 		return
 	}
 
-	respond := response.StatusCode == http.StatusOK
-
 	pingResult <- entities.PingResult{
 		IdServer:  server.Id,
-		Respond:   respond,
 		ScannedAt: &now,
+		Info:      response.Status,
 	}
 }

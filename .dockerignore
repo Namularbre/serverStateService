@@ -6,3 +6,4 @@ serverStateService.iml
 .gitignore
 Dockerfile
 .dockerignore
+README.md

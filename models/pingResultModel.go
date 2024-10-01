@@ -14,6 +14,6 @@ func InsertResult(result *entities.PingResult) error {
 
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO pingResults (idServer, respond, scannedAt) VALUES (?, ?, ?);", result.IdServer, result.Respond, result.ScannedAt)
+	_, err = db.Exec("INSERT INTO pingResults (idServer, scannedAt, info) VALUES (?, ?, ?);", result.IdServer, result.ScannedAt, result.Info)
 	return err
 }
