@@ -1,23 +1,21 @@
 package models
 
 import (
-	"serverStateService/entities"
-	"serverStateService/utils"
-
+	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
+	"serverStateService/entities"
 )
 
-type ServerModel struct {
-	db *utils.DatabaseHandler
-}
-
-func (m *ServerModel) GetServers() ([]entities.Server, error) {
-	err := m.db.Connect()
+func GetServers() ([]entities.Server, error) {
+	db, err := sql.Open("mysql", os.Getenv("CONN_STR"))
 	if err != nil {
 		return nil, err
 	}
 
-	rows, err := m.db.DB.Query("SELECT id, ip, name FROM servers")
+	defer db.Close()
+
+	rows, err := db.Query("SELECT id, ip, name FROM servers")
 	if err != nil {
 		return nil, err
 	}
@@ -25,19 +23,22 @@ func (m *ServerModel) GetServers() ([]entities.Server, error) {
 	var servers []entities.Server
 
 	for rows.Next() {
-		var server entities.Server
+		var id int
+		var ip string
+		var hostname string
 
-		err = rows.Scan(&server)
+		err = rows.Scan(&id, &ip, &hostname)
 		if err != nil {
 			return nil, err
 		}
 
-		servers = append(servers, server)
-	}
+		server := entities.Server{
+			Id:   id,
+			Ip:   ip,
+			Name: hostname,
+		}
 
-	err = m.db.Disconnect()
-	if err != nil {
-		return nil, err
+		servers = append(servers, server)
 	}
 
 	return servers, nil

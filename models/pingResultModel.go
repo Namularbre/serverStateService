@@ -1,24 +1,19 @@
 package models
 
 import (
+	"database/sql"
+	"os"
 	"serverStateService/entities"
-	"serverStateService/utils"
 )
 
-type PingResultModel struct {
-	db *utils.DatabaseHandler
-}
-
-func (m *PingResultModel) InsertResult(result *entities.PingResult) error {
-	err := m.db.Connect()
+func InsertResult(result *entities.PingResult) error {
+	db, err := sql.Open("mysql", os.Getenv("CONN_STR"))
 	if err != nil {
 		return err
 	}
 
-	_, err = m.db.DB.Exec("INSERT INTO pingResults (idServer, respond) VALUES (?, ?);", result.IdServer, result.Respond)
-	if err != nil {
-		return err
-	}
+	defer db.Close()
 
-	return m.db.Disconnect()
+	_, err = db.Exec("INSERT INTO pingResults (idServer, respond, scannedAt) VALUES (?, ?, ?);", result.IdServer, result.Respond, result.ScannedAt)
+	return err
 }

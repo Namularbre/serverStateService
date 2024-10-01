@@ -6,13 +6,12 @@ import (
 	"serverStateService/entities"
 	"serverStateService/models"
 	"time"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func RunPings() {
-	serverModel := models.ServerModel{}
-	pingModel := models.PingResultModel{}
-
-	servers, err := serverModel.GetServers()
+	servers, err := models.GetServers()
 	if err != nil {
 		log.Fatalln(err)
 		return
@@ -25,7 +24,7 @@ func RunPings() {
 
 		pingResult := <-pingResultChan
 
-		err = pingModel.InsertResult(&pingResult)
+		err = models.InsertResult(&pingResult)
 		if err != nil {
 			log.Fatalln(err)
 			return
@@ -35,13 +34,18 @@ func RunPings() {
 
 func runPing(server *entities.Server, pingResult chan entities.PingResult) {
 	response, err := http.Get(server.Ip)
+	now := time.Now()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		pingResult <- entities.PingResult{
+			IdServer:  server.Id,
+			Respond:   false,
+			ScannedAt: &now,
+		}
 		return
 	}
 
 	respond := response.StatusCode == http.StatusOK
-	now := time.Now()
 
 	pingResult <- entities.PingResult{
 		IdServer:  server.Id,

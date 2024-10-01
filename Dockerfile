@@ -20,12 +20,5 @@ RUN GOOS=linux GOARCH=amd64 go build -o myapp
 # Expose the port where the application will listen (e.g., 8080)
 EXPOSE 8080
 
-# Set the environment variable for the MariaDB connection string
-ENV CONN_STR="mariadb://namu:2261@localhost:3306/server_monitoring"
-# Set the environment variable for the http port
-ENV PORT=8080
-# Set the environment variable for the http address
-ENV ADDRESS=localhost
-
 # Default command to run the application
 CMD ["./myapp"]

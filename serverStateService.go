@@ -1,7 +1,13 @@
 package main
 
-import "serverStateService/monitoring"
+import (
+	"serverStateService/monitoring"
+	"time"
+)
 
 func main() {
-	monitoring.RunPings()
+	for {
+		monitoring.RunPings()
+		time.Sleep(12 * time.Hour)
+	}
 }
